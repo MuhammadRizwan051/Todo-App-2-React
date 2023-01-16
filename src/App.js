@@ -1,5 +1,6 @@
-import { TextField, Box, Typography, Checkbox } from '@mui/material'
+import './App.css'
 import React, { useState } from 'react'
+import { TextField, Box, Typography, Checkbox } from '@mui/material'
 import SMButton from './components/SMButton'
 import 'font-awesome/css/font-awesome.min.css';
 
@@ -29,16 +30,13 @@ function App() {
       setTodos([...todos])
       setIndexNum(null)
       setBtn(false)
-      console.log(todos)
     }
-    
   }
-  console.log(todos)
 
   let edit = (e, i) => {
     console.log(i)
     setBtn(true)
-    setVal(e)
+    setVal(e.text)
     setIndexNum(i)
   }
 
@@ -55,21 +53,21 @@ function App() {
   }
 
   let check = (bool, e, i) => {
-    console.log(e)
+    console.log(bool)
     todos[i] = {
-      text: e,
+      text: e.text,
       isChecked: bool,
     }
     setTodos([...todos])
   }
+
 
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh', bgcolor: '#243763' }}>
         <Box sx={{ width: '40%', bgcolor: 'white' }}>
 
-
-
+          {/* TextField and Add Button  */}
           <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 5 }}>
             <TextField value={val} variant='standard' label='Add Todo' sx={{ width: '70%' }} onChange={(e) => setVal(e.target.value)} />
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -79,16 +77,23 @@ function App() {
             </Box>
           </Box>
 
-          {todos.length > 0 ?
-            <Typography sx={{ fontSize: 30, fontWeight: 'bold', marginTop: 3, textAlign: 'center', color: '#243763' }}>{todos.length}</Typography>
+
+          {/* Todos Count */}
+          {todos.length > 0 ? (
+            <>
+              <Typography sx={{ fontSize: 30, fontWeight: 'bold', marginTop: 3, textAlign: 'center', color: '#243763' }}>{todos.length}</Typography>
+            </>
+          )
             :
             <Typography sx={{ fontSize: 30, fontWeight: 'bold', marginTop: 3, textAlign: 'center', color: '#243763' }}>No Todos to display</Typography>
           }
 
+
+          {/* All Todos */}
           <Box sx={{ marginTop: 5 }}>
             {todos && todos.length > 0 && todos.map((e, i) => (
-              <Box key={i} sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
-                <Box sx={{ borderBottom: '1px solid black', width: '70%', display: 'flex', paddingBottom: 1 }}>
+              <Box key={i} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
+                <Box className={e.isChecked ? 'done' : ''} sx={{ borderBottom: '1px solid black', width: '70%', display: 'flex', alignItems: 'center' }}>
                   <Checkbox checked={e.isChecked} onClick={(mark) => check(mark.target.checked, e, i)} />
                   <Typography sx={{ width: '90%' }}>{e.text}</Typography>
                   <Box sx={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}>
@@ -101,6 +106,7 @@ function App() {
           </Box>
 
 
+          {/* Delete Button */}
           <Box sx={{ width: '40%', display: 'flex', justifyContent: 'center', position: 'absolute', bottom: 15 }}>
             {todos.length > 0 ?
               <SMButton onClick={deleteAll} value='Delete All' style={{ padding: '10px 0px', backgroundColor: 'crimson', color: 'white', fontWeight: 'bold', fontSize: 22, width: '80%', border: 'none', borderRadius: 5 }} />
